@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:6.0.2-focal
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-comment_service}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-mongo}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-!changeMe!}
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data:
