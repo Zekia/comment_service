@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Request, status
 from fastapi.encoders import jsonable_encoder
 from typing import List
 
-from app.dtos import ThreadPost
+from app.web.dtos import ThreadPost
 from app.models.thread import Thread
 
 router = APIRouter()

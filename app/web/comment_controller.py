@@ -1,9 +1,7 @@
-import json
-
 from fastapi import APIRouter, Body, Request, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 
-from app.dtos import CommentPost
+from app.web.dtos import CommentPost
 from app.models.comment import Comment
 
 router = APIRouter()
