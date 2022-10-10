@@ -7,7 +7,7 @@ from app.models.comment import Comment
 router = APIRouter()
 
 
-@router.post("/", response_description="Create a new comment", status_code=status.HTTP_201_CREATED, response_model=Comment)
+@router.put("/", response_description="Create a new comment", status_code=status.HTTP_201_CREATED, response_model=Comment)
 def create_comment(request: Request, comment_post: CommentPost = Body(...)):
     new_comment = Comment(title=comment_post.title,
                           content=comment_post.content,
