@@ -10,11 +10,11 @@ router = APIRouter()
 
 @router.put("/{id}", response_description="Create a new comment", status_code=status.HTTP_201_CREATED,
             response_model=Comment)
-def create_comment(
+def put_comment(
         id: str,
         request: Request,
         comment_post: CommentPost = Body(...)
-):
+) -> Comment:
     comment_repository = CommentRepositoryFactory().from_request(request)
 
     new_comment = Comment(_id=id, **comment_post.dict())
@@ -25,4 +25,4 @@ def create_comment(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=str(err))
 
-    return jsonable_encoder(new_comment)
+    return new_comment
