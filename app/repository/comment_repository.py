@@ -5,8 +5,9 @@ from app.model.comment import Comment
 
 class CommentRepository:
     @abstractmethod
-    def create_comment(self, comment: Comment, thread_id, app) -> Comment:
+    def add_comment(self, comment: Comment, thread_id: str) -> Comment:
         pass
+
 
 class CommentRepositoryException(Exception):
     pass

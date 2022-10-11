@@ -6,11 +6,11 @@ from app.model.thread import Thread
 
 class ThreadRepository:
     @abstractmethod
-    def add_thread(self, thread: Thread, app) -> Thread:
+    def add_thread(self, thread: Thread) -> Thread:
         pass
 
     @abstractmethod
-    def find_all(self, app) -> List[Thread]:
+    def find_all(self) -> List[Thread]:
         pass
 
 
