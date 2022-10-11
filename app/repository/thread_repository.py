@@ -13,6 +13,10 @@ class ThreadRepository:
     def find_all(self) -> List[Thread]:
         pass
 
+    @abstractmethod
+    def find_with_id(self, id: str) -> List[Thread]:
+        pass
+
 
 class ThreadRepositoryException(Exception):
     pass

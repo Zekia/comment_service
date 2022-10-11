@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from fastapi.encoders import jsonable_encoder
 
@@ -14,3 +14,8 @@ class ThreadMongoRepository(ThreadRepository, MongoRepository):
 
     def find_all(self) -> List[Thread]:
         return list(self.database.find())
+
+    def find_with_id(self, id) -> Union[Thread, None]:
+        if (thread := self.database.find_one({"_id": id})) is not None:
+            return thread
+        return None

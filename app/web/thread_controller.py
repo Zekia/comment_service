@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Body, Request, status
+from fastapi import APIRouter, Body, Request, status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from typing import List
+
+from app.repository.thread_repository import ThreadRepositoryException
 from app.web.dtos import ThreadPost
 from app.model.thread import Thread
 from app.web.factory.thread_repository_factory import ThreadRepositoryFactory
@@ -25,3 +27,16 @@ def get_all_threads(
 ):
     thread_repository = ThreadRepositoryFactory().from_request(request)
     return thread_repository.find_all()
+
+
+@router.get("/{id}", response_description="Get a single thread by id", response_model=Thread)
+def get_a_thread(
+        id: str,
+        request: Request
+):
+    thread_repository = ThreadRepositoryFactory().from_request(request)
+    thread = thread_repository.find_with_id(id)
+    if thread:
+        return thread
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f'Unknown thread {id}')
