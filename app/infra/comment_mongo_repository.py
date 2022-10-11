@@ -15,3 +15,16 @@ class CommentMongoRepository(CommentRepository, MongoRepository):
         if update_result.modified_count == 0:
             raise CommentRepositoryException(f"Thread with ID {thread_id} not found")
         return new_comment
+
+    def update_comment(self, new_comment: Comment, thread_id: str) -> Comment:
+        new_comment_as_json = jsonable_encoder(new_comment)
+        self.collection.find_one_and_update(
+            {"_id": thread_id,
+             "comments._id": new_comment.id
+             },
+            {'$set': {
+                'comments.$': new_comment_as_json
+            }
+            }
+        )
+        return new_comment

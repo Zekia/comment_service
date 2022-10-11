@@ -21,13 +21,13 @@ def put_comment(
     if thread is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"Thread with ID {comment_post.thread_id} not found")
-    
+
     index_of_comment_to_in_thread = get_index_comment_to_update(new_comment, thread)
 
     if index_of_comment_to_in_thread is None:
         add_comment(comment_post.thread_id, new_comment, request, response)
     else:
-        update_comment(index_of_comment_to_in_thread, new_comment, thread, response, request)
+        update_comment(new_comment, thread, response, request)
     return new_comment
 
 
@@ -37,11 +37,9 @@ def add_comment(thread_id, new_comment, request, response):
     response.status_code = status.HTTP_201_CREATED
 
 
-def update_comment(index_of_comment_in_thread, new_comment, thread, response, request):
-    thread_repository = ThreadRepositoryFactory().from_request(request)
-    thread.comments.pop(index_of_comment_in_thread)
-    thread.comments.insert(index_of_comment_in_thread, new_comment)
-    thread_repository.update_thread(thread)
+def update_comment(new_comment, thread, response, request):
+    comment_repository = CommentRepositoryFactory().from_request(request)
+    comment_repository.update_comment(new_comment, thread.id)
     response.status_code = status.HTTP_200_OK
 
 
