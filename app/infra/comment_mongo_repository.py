@@ -8,7 +8,7 @@ from app.repository.comment_repository import CommentRepositoryException, Commen
 class CommentMongoRepository(CommentRepository, MongoRepository):
     def add_comment(self, new_comment: Comment, thread_id: str) -> Comment:
         new_comment_as_json = jsonable_encoder(new_comment)
-        update_result = self.database.update_one(
+        update_result = self.collection.update_one(
             {"_id": thread_id},
             {"$push": {"comments": new_comment_as_json}}
         )

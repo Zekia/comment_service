@@ -1,4 +1,5 @@
 import random
+import uuid
 
 import httpx
 from starlette import status
@@ -6,7 +7,8 @@ from starlette import status
 
 def test_put_comment_should_create_a_comment():
     # Making sure we have a thread
-    response = httpx.put("http://localhost/threads/", json={'title': 'my_title'})
+    thread_id = str(uuid.uuid4())
+    response = httpx.put(f"http://localhost/threads/{thread_id}", json={'title': 'my_title'})
     thread_id = response.json()['_id']
     assert thread_id
 

@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, Field
 
+
 class CommentUpdate(BaseModel):
     title: Optional[str]
     author: Optional[str]
@@ -16,6 +17,7 @@ class CommentUpdate(BaseModel):
                 "image": "hair.png"
             }
         }
+
 
 class ThreadPost(BaseModel):
     title: str = Field(...)
@@ -34,3 +36,7 @@ class CommentPost(BaseModel):
     author: str = Field(...)
     content: str = Field(...)
     image: str = Field(...)
+
+
+class DeleteResult(BaseModel):
+    id: str = Field(...)

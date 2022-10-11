@@ -7,5 +7,5 @@ from app.repository.comment_repository import CommentRepository
 class CommentRepositoryFactory(ModelRepository):
     def from_request(self, request: Request) -> CommentRepository:
         repository = CommentMongoRepository()
-        repository.setDatabase(request.app.database["threads"])
+        repository.setCollection(request.app.database["threads"])
         return repository

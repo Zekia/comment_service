@@ -1,5 +1,8 @@
-class MongoRepository:
-    database = None
+from pymongo.collection import Collection
 
-    def setDatabase(self, database):
-        self.database = database
+
+class MongoRepository:
+    collection = None
+
+    def setCollection(self, collection: Collection):
+        self.collection = collection

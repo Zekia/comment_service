@@ -7,5 +7,5 @@ from app.repository.thread_repository import ThreadRepository
 class ThreadRepositoryFactory(ModelRepository):
     def from_request(self, request: Request) -> ThreadRepository:
         repository = ThreadMongoRepository()
-        repository.setDatabase(request.app.database["threads"])
+        repository.setCollection(request.app.database["threads"])
         return repository
