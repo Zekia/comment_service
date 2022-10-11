@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from typing import List
 
 from app.web.dtos import ThreadPost
-from app.models.thread import Thread
+from app.model.thread import Thread
 
 router = APIRouter()
 

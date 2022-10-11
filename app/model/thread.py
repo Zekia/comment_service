@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from app.models.comment import Comment
+from app.model.comment import Comment
 
 
 class Thread(BaseModel):
