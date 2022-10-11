@@ -7,6 +7,9 @@ You should create a .env based on .env.example and change the default values.
 ## Deploy
 Run `docker compose up`
 
+## Testing
+Run `pytest -v`
+
 ## API Documentation
 The api documentation can be found at http://localhost/docs
 
