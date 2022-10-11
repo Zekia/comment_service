@@ -11,6 +11,12 @@ class Thread(BaseModel):
     title: str = Field(...)
     comments: List[Comment] = []
 
+    def has_comment(self, comment: Comment):
+        for i in range(len(self.comments)):
+            if self.comments[i].id == comment.id:
+                return True
+        return False
+
     class Config:
         schema_extra = {
             "example": {
