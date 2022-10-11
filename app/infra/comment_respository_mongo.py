@@ -1,10 +1,10 @@
 from fastapi.encoders import jsonable_encoder
 
 from app.model.comment import Comment
-from app.repository.comment_repository import CommentRepositoryException
+from app.repository.comment_repository import CommentRepositoryException, CommentRepository
 
 
-class CommentRepositoryMongo:
+class CommentRepositoryMongo(CommentRepository):
     def create_comment(self, new_comment: Comment, thread_id: str, app) -> Comment:
         new_comment_as_json = jsonable_encoder(new_comment)
         update_result = app.database["threads"].update_one(
