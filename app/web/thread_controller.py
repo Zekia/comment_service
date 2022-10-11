@@ -1,24 +1,29 @@
-from fastapi import APIRouter, Body, Request, status
+from fastapi import APIRouter, Body, Request, status, Depends
 from fastapi.encoders import jsonable_encoder
 from typing import List
 
+from app.di_container import DIContainer
+from app.repository.thread_repository import ThreadRepository
 from app.web.dtos import ThreadPost
 from app.model.thread import Thread
 
 router = APIRouter()
 
+
 @router.put("/", response_description="Create a new thread", status_code=status.HTTP_201_CREATED, response_model=Thread)
-def create_thread(request: Request, thread_post: ThreadPost = Body(...)):
+def add_thread(
+        request: Request,
+        thread_post: ThreadPost = Body(...),
+        thread_repository: ThreadRepository = Depends(DIContainer().get(ThreadRepository))
+):
     new_thread = Thread(title=thread_post.title)
-    new_thread = request.app.database["threads"].insert_one(jsonable_encoder(new_thread))
-    created_thread = request.app.database["threads"].find_one(
-        {"_id": new_thread.inserted_id}
-    )
+    return jsonable_encoder(thread_repository.add_thread(new_thread, request.app))
 
-    return created_thread
 
-@router.get("/", response_description="Get all the threads", status_code=status.HTTP_200_OK, response_model=List[Thread])
-def get_all_threads(request: Request):
-    threadsList = list(request.app.database["threads"].find())
-    print(threadsList)
-    return threadsList
+@router.get("/", response_description="Get all the threads", status_code=status.HTTP_200_OK,
+            response_model=List[Thread])
+def get_all_threads(
+        request: Request,
+        thread_repository: ThreadRepository = Depends(DIContainer().get(ThreadRepository))
+):
+    return thread_repository.find_all(request.app)

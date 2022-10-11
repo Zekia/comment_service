@@ -1,5 +1,7 @@
 from app.infra.comment_respository_mongo import CommentRepositoryMongo
+from app.infra.thread_respository_mongo import ThreadRepositoryMongo
 from app.repository.comment_repository import CommentRepository
+from app.repository.thread_repository import ThreadRepository
 
 
 class DIContainer:
@@ -11,5 +13,6 @@ class DIContainer:
         """
         instance_type = instance.__name__
         return {
-            CommentRepository.__name__: CommentRepositoryMongo
+            CommentRepository.__name__: CommentRepositoryMongo,
+            ThreadRepository.__name__: ThreadRepositoryMongo
         }[instance_type]
