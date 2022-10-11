@@ -16,7 +16,6 @@ class ThreadMongoRepository(ThreadRepository, MongoRepository):
         self.collection.update_one(
             {"_id": new_thread.id}, {"$set": jsonable_encoder(new_thread)}
         )
-        print("new_thread", new_thread)
         return new_thread
 
     def find_all(self) -> List[Thread]:
@@ -24,7 +23,6 @@ class ThreadMongoRepository(ThreadRepository, MongoRepository):
 
     def find_with_id(self, id) -> Union[Thread, None]:
         if (thread := self.collection.find_one({"_id": id})) is not None:
-            print("le finder with id renvoie", thread)
             return Thread(**thread)
         return None
 
