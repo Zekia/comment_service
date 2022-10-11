@@ -8,22 +8,17 @@ from app.web.factory.comment_repository_factory import CommentRepositoryFactory
 router = APIRouter()
 
 
-@router.put("/", response_description="Create a new comment", status_code=status.HTTP_201_CREATED,
+@router.put("/{id}", response_description="Create a new comment", status_code=status.HTTP_201_CREATED,
             response_model=Comment)
 def create_comment(
+        id: str,
         request: Request,
         comment_post: CommentPost = Body(...)
 ):
     comment_repository = CommentRepositoryFactory().from_request(request)
 
+    new_comment = Comment(_id=id, **comment_post.dict())
     try:
-        new_comment = Comment(
-            title=comment_post.title,
-            content=comment_post.content,
-            author=comment_post.author,
-            image=comment_post.image
-        )
-
         comment_repository.add_comment(new_comment, comment_post.thread_id)
 
     except CommentRepositoryException as err:
