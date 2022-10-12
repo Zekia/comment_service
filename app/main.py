@@ -20,5 +20,5 @@ def shutdown_db_client():
     app.mongodb_client.close()
 
 
-app.include_router(thread_rooter, tags=["threads"], prefix="/threads")
-app.include_router(comment_rooter, tags=["comments"], prefix="/comments")
+app.include_router(thread_rooter, tags=["threads"], prefix="/v1/threads")
+app.include_router(comment_rooter, tags=["comments"], prefix="/v1/comments")

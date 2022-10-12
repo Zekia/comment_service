@@ -8,7 +8,7 @@ from starlette import status
 def test_put_comment_should_create_a_comment():
     # Making sure we have a thread
     thread_id = str(uuid.uuid4())
-    response = httpx.put(f"http://localhost/threads/{thread_id}", json={'title': 'my_title'})
+    response = httpx.put(f"http://localhost/v1/threads/{thread_id}", json={'title': 'my_title'})
     thread_id = response.json()['_id']
     assert thread_id
 
@@ -21,7 +21,7 @@ def test_put_comment_should_create_a_comment():
         "content": "test_content",
         "image": "test_image"
     }
-    response = httpx.put(f"http://localhost/comments/{comment_id}",
+    response = httpx.put(f"http://localhost/v1/comments/{comment_id}",
                          json=comment_to_insert)
 
     assert response.status_code == 201
@@ -43,7 +43,7 @@ def test_put_comment_with_unknow_thread_should_return_404():
         "image": "test_image"
     }
 
-    response = httpx.put(f"http://localhost/comments/{thread_id}",
+    response = httpx.put(f"http://localhost/v1/comments/{thread_id}",
                          json=comment_to_insert)
     assert status.HTTP_400_BAD_REQUEST == response.status_code
     expected_body = {
@@ -54,7 +54,7 @@ def test_put_comment_with_unknow_thread_should_return_404():
 
 def test_put_existing_comment_should_update_the_comment():
     thread_id = str(uuid.uuid4())
-    response = httpx.put(f"http://localhost/threads/{thread_id}", json={'title': 'my_title'})
+    response = httpx.put(f"http://localhost/v1/threads/{thread_id}", json={'title': 'my_title'})
     thread_id = response.json()['_id']
 
     comment_id = str(uuid.uuid4())
@@ -67,13 +67,13 @@ def test_put_existing_comment_should_update_the_comment():
         "image": "test_image"
     }
 
-    response = httpx.put(f"http://localhost/comments/{comment_id}",
+    response = httpx.put(f"http://localhost/v1/comments/{comment_id}",
               json=comment_to_insert)
     new_title = 'new_title'
     assert status.HTTP_201_CREATED == response.status_code
     expected_comment = comment_to_insert.copy()
     expected_comment['title'] = new_title
-    response = httpx.put(f"http://localhost/comments/{comment_id}",
+    response = httpx.put(f"http://localhost/v1/comments/{comment_id}",
               json=expected_comment)
     assert status.HTTP_200_OK == response.status_code
 
@@ -81,7 +81,7 @@ def test_put_existing_comment_should_update_the_comment():
 
 
 def assert_comment_was_updated(expected_comment: dict):
-    response = httpx.get("http://localhost/threads/")
+    response = httpx.get("http://localhost/v1/threads/")
     assert status.HTTP_200_OK == response.status_code
     id_comment = expected_comment["_id"]
     for thread in response.json():
